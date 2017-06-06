@@ -4,6 +4,9 @@
 
 Le but de cette démonstration est de tester et d'analyser les possibilités offertes par WebAssembly. Dans cette étude nous verrons le fonctionnement de WebAssembly, comment compiler et exporter du code C vers une page web utilisant javascript. Nous étudions également les différentes foncionalités disponibles via WebAssembly ainsi que les optimisations possibles.
 
+![ImageCouleur](src/chaton.jpg)
+![ImageNoirBlanc](src/img_grayscale.png)
+
 Le code de démonstration permet de comparer la conversion d'une image en noir et blanc entre : 
  - C
  - JavaScript
@@ -11,8 +14,7 @@ Le code de démonstration permet de comparer la conversion d'une image en noir e
 
 Les tests ont été réalisés sur un processeur Intel : I7 4870HQ à 2.5GHz (Intel) et sur un processeur ARM : 
 
-![ImageCouleur](src/chaton.jpg)
-![ImageNoirBlanc](src/chaton.jpg)
+
 
 ## Pour déployer l'application
 
