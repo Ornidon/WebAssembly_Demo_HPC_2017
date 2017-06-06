@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<canvas id="canvas" width="426" height="266"></canvas>
+<img id="img" src="img_grayscale.png">
+
+<script>
+	var img = document.getElementById("img");
+	img.onload = function() {
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+
+		var width = canvas.width;
+		var height = canvas.height;
+
+		ctx.drawImage(img, 0, 0);
+		var data = pack(ctx.getImageData(0, 0, width, height).data);
+		ctx.clearRect(0, 0, width, height);
+
+		var processed_data = new Uint8ClampedArray(data.length);
+
+		var pixel;
+		var pattern = [
+			[ 0, 32,  8, 40,  2, 34, 10, 42],   /* 8x8 Bayer ordered dithering  */
+			[48, 16, 56, 24, 50, 18, 58, 26],   /* pattern.  Each input pixel   */
+			[12, 44,  4, 36, 14, 46,  6, 38],   /* is scaled to the 0..63 range */
+			[60, 28, 52, 20, 62, 30, 54, 22],   /* before looking in this table */
+			[ 3, 35, 11, 43,  1, 33,  9, 41],   /* to determine the action.     */
+			[51, 19, 59, 27, 49, 17, 57, 25],
+			[15, 47,  7, 39, 13, 45,  5, 37],
+			[63, 31, 55, 23, 61, 29, 53, 21]
+		];
+
+		for (var i = 0; i < height; i++) {
+			for (var j = 0; j < width; j++) {
+				pixel = data[width*i + j] >> 2; /* scaled to 0..63 for Bayer matrix comparison */
+
+				if (pixel > pattern[j & 7][i & 7])
+					processed_data[width*i + j] = 255;
+				else
+					processed_data[width*i + j] = 0;
+			}
+		}
+
+		drawGrayscaleImage(ctx, processed_data, width, height);
+
+		function pack(data) {
+			var buffer = new Uint8ClampedArray(data.length / 4);
+			for (var i = 0; i < data.length; i += 4) {
+				buffer[i / 4] = data[i];
+			}
+			return buffer;
+		}
+
+		function unpack(data) {
+			var buffer = new Uint8ClampedArray(data.length * 4);
+			for (var i = 0; i < data.length * 4; i += 4) {
+				buffer[i] = buffer[i+1] = buffer[i+2] = data[i / 4];
+				buffer[i+3] = 255;
+			}
+			return buffer;
+		}
+
+		function drawGrayscaleImage(ctx, data, width, height) {
+			ctx.putImageData(new ImageData(unpack(data), width, height), 0, 0, 0, 0, width, height);
+		}
+
+		//console.log(canvas.toDataURL())
+	}
+</script>
