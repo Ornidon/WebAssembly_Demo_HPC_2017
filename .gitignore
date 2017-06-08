@@ -1,0 +1,5 @@
+.idea
+*.iml
+*.dSYM
+src/gray
+src/dithered.png
