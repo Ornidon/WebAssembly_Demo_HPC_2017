@@ -13,7 +13,7 @@ Le code de démonstration permet de comparer le "dithering" d'une image en noir 
  - JavaScript
  - JavaScript avec WebAssembly
 
-Les tests ont été réalisés sur un processeur Intel : I7 4870HQ à 2.5GHz (Intel) et sur un processeur ARM : 
+Les tests ont été réalisés sur un processeur Intel : I5 3427U à 1.8GHz (Intel) et sur un processeur ARM : Qualcomm S-600 à 1,9 GHz. 
 
 
 
@@ -70,16 +70,21 @@ Sur Windows, il faut remplacer `./emsdk` par `emsdk`, et source `./emsdk_env.sh`
 La mesure de performance à simplement consisté en un comptage du nombre d'appel et d'execution de la méthode dither pendant une durée de 500ms. Nous obtenons les résultats suivants obtenus les résultats suivants sur AMD64:
  - Code C : 2074 itérations
  - Web Assembly : 1457 itérations
- - JS : 726 itérations
+ - Javascript : 726 itérations
+ 
 Et sur processeur ARM mobile :
  - Web Assembly : 219 itérations
  - Javascript : 123 itérations
  
- [ Note : Dans webassembly les mesures comprennent également l'overhead necessaire pour des appels des fonctions WebAssembly depuis JavaScript ( ex : Conversion des paramètres...) ]
+*Note : Dans webassembly les mesures comprennent également l'overhead necessaire pour des appels des fonctions WebAssembly depuis JavaScript ( ex : Conversion des paramètres...)*
+
+*Note2 : Les tests ont été réalisés sur un processeur Intel : I5 3427U à 1.8GHz (Intel) et sur un processeur ARM : Qualcomm S-600 à 1,9 GHz*
  
 ## Analyse et Conclusion
-Nous pouvons observer que nous gagnons environ 2 fois les performances du JS avec WebAssembly sur desktop contre environ 1,5 fois sur mobile. Au niveau des performances Web assembly se situe proche du C en offrant toutefois des performances légèrement moins bonne nottament en raison de l'overhead necessaire à l'appel des fonctions que nous mesurons également
+Nous pouvons observer que nous gagnons environ 2 fois les performances du JS avec WebAssembly sur desktop contre environ 1,5 fois sur mobile. Au niveau des performances Web assembly se situe proche du C en offrant toutefois des performances légèrement moins bonne nottament en raison de l'overhead necessaire à l'appel des fonctions que nous mesurons également.
+
 Le format WebAssembly est portable en une seule compilation tant sur desktop que sur mobile. En effet il nous à fallut qu'une seule compilation pour nos différents ordinateur et téléphones, alors qu'une application classique necessiterait une compilation par plateforme. Ce qui fait de WebAssembly est un environnement d'exection commun entre les plateformes pouvant être utilisé à l'extérieur d'un navigateur tel que la JVM.
+
 En utilisant les instructions SIMD on atteint en C plus de 20703 itération ce qui correspond à 10 fois plus de performances.
 Une fois que les insctruction SIMD seront complètement intégrées dans WebAssembly on peut s'attendre à un gain de performances similaire.
 
