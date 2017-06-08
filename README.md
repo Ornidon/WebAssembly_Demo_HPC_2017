@@ -84,7 +84,7 @@ Et sur processeur ARM mobile :
  - Web Assembly : 219 itérations
  - Javascript : 123 itérations
 
-*Note2 : Les tests ont été réalisés sur un processeur Intel I5 3427U à 1.8GHz et sur un processeur ARM : Qualcomm S-600 à 1,9 GHz*
+*Rappel : Les tests ont été réalisés sur un processeur Intel I5 3427U à 1.8GHz et sur un processeur ARM : Qualcomm S-600 à 1,9 GHz*
  
 ## Analyse et Conclusion
 
