@@ -46,7 +46,7 @@ Une fois l'installation complete, pour entrer un compilateur Emscripten dans l'e
 $ source ./emsdk_env.sh
 ```
 
-Sur Windows, il faut remplacer ./emsdk par emsdk, et source ./emsdk_env.sh par emsdk_env above.
+Sur Windows, il faut remplacer `./emsdk` par `emsdk`, et source `./emsdk_env.sh` par `emsdk_env`.
 
 ### Déploiment de l'application
 
@@ -55,17 +55,34 @@ Sur Windows, il faut remplacer ./emsdk par emsdk, et source ./emsdk_env.sh par e
 3. Lancer les commandes suivantes :
 
 ```bash
-  $ emcc hello.c -s WASM=1 -o hello.html
+  $ emcc main.c -s WASM=1 -s SIDE_MODULE=1 -O3 -o main.wasm
   $ emrun --no_browser --port 8080 
 ```
 
 ## Utilisation
-
- Ouvrir votre navigateur et allez sur localhost:8080
+ Déployez l'application puis ouvrez votre navigateur et allez sur localhost:8080 ou compiliez le fichier grayscale.c à l'aide de la commande suivante :
+```bash
+  $ gcc grayscale.c -O3 -std=c11 -Wall -Wextra -g -I../stb/ -lm
+```
 
 ## Mesures
 
-## Analyse
+La mesure de performance à simplement consisté en un comptage du nombre d'appel et d'execution de la méthode dither pendant une durée de 500ms. Nous obtenons les résultats suivants obtenus les résultats suivants sur AMD64:
+ - Code C : 2074 itérations
+ - Web Assembly : 1457 itérations
+ - JS : 726 itérations
+Et sur processeur ARM mobile :
+ - Web Assembly : 219 itérations
+ - Javascript : 123 itérations
+ 
+ [ Note : Dans webassembly les mesures comprennent également l'overhead necessaire pour des appels des fonctions WebAssembly depuis JavaScript ( ex : Conversion des paramètres...) ]
+ 
+## Analyse et Conclusion
+Nous pouvons observer que nous gagnons environ 2 fois les performances du JS avec WebAssembly sur desktop contre environ 1,5 fois sur mobile. Au niveau des performances Web assembly se situe proche du C en offrant toutefois des performances légèrement moins bonne nottament en raison de l'overhead necessaire à l'appel des fonctions que nous mesurons également
+Le format WebAssembly est portable en une seule compilation tant sur desktop que sur mobile. En effet il nous à fallut qu'une seule compilation pour nos différents ordinateur et téléphones, alors qu'une application classique necessiterait une compilation par plateforme. Ce qui fait de WebAssembly est un environnement d'exection commun entre les plateformes pouvant être utilisé à l'extérieur d'un navigateur tel que la JVM.
+En utilisant les instructions SIMD on atteint en C plus de 20703 itération ce qui correspond à 10 fois plus de performances.
+Une fois que les insctruction SIMD seront complètement intégrées dans WebAssembly on peut s'attendre à un gain de performances similaire.
+
 
 ## Technologies 
 Pour ce projet nous utilisons les technologies suivantes :
