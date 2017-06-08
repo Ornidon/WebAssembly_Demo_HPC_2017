@@ -107,7 +107,8 @@ Pour ce projet nous utilisons les technologies suivantes :
 
 ## Pour plus d'informations
 
-?
+[Site officiel](http://webassembly.org/)
+
 
 ## Auteurs
 Bastien Clément, Paul Ntawuruhunga, Thibaut Loiseau
